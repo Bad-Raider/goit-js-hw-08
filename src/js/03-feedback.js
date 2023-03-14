@@ -6,8 +6,11 @@ const input = document.querySelector("input");
 const textarea = document.querySelector("textarea");
 const form = document.querySelector("form");
 
+// added required value for DOM Elerment
+input.setAttribute("required", true);
+textarea.setAttribute("required", true);
 // Obj value local storage 
-const formData = {};
+let formData = {};
 
 // function checking if the value is in local storage
 function getValueLocalStorage() {
@@ -15,13 +18,16 @@ function getValueLocalStorage() {
     const info = JSON.parse(localStorage.getItem("feedback-form-state"));
     
     if (info) {
-        
-        if (info.email) {
-            input.value = info.email;
+        const {email, message } = info;
+        if (email) {
+            input.value = email;
+            formData.email = email;
         }
-        if (info.message) {
-            textarea.value = info.message;
-        }
+
+        if (message) {
+            textarea.value = message;
+            formData.message = message;
+           }
     }
 };
 //  call function
@@ -38,14 +44,16 @@ function handleValueElementForm(e) {
 // submit form and handler
 form.addEventListener("submit", handlerSubmitButton);
 function handlerSubmitButton(e) {
-   
+    // reset standart settings    
     e.preventDefault();
-
+    // reset form info
     e.currentTarget.reset();
-
-    console.log(formData);
-
+    // delete local storage
     localStorage.removeItem("feedback-form-state");
+    // return obj 
+    console.log(formData);
+    // delete obj
+    formData = {};
 }
 
 
